@@ -77,11 +77,12 @@ app.get('/twitch/initraid',async(req,res)=>{
 	return Object.keys(obj).length === 0;
 	}
 	if(!isEmpty(req.query)){
+        console.log(req.query)
 		const {code} = req.query
 		const response = await axios.post(`https://id.twitch.tv/oauth2/token?client_id=${process.env.CLIENT_ID}&client_secret=${process.env.CLIENT_SECRET}&code=${code}&grant_type=authorization_code&redirect_uri=http://localhost:3000`,null,{
         })
 		const tokenUserRaid = response.data.access_token
-       		res.send('hola jonhy')
+            res.send('hola jonhy')
 	
 		if(tokenUserRaid != undefined){
 			const data = await axios.post('https://api.twitch.tv/helix/raids?from_broadcaster_id=988434540&to_broadcaster_id=1097614343',null,{
