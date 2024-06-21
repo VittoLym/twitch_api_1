@@ -132,8 +132,8 @@ app.post('/twitch/stream',(req,res)=>{
     }
 });
 app.listen(port,()=> {console.log(`listen on port ${port}`)
- /*streamOnSubcription()*/
- getSubscription('435c2f02-6f0f-4fe0-9735-2bf902e6aefa')
+ /* raidEventSubscription() */
+ deleteSubscription('3b3d77a4-53a0-4060-a7de-f9c24786b8e8')
 });
 async function streamOnSubscription(){
     const response = await axios.post('https://api.twitch.tv/helix/eventsub/subscriptions',{
@@ -157,7 +157,7 @@ async function streamOnSubscription(){
     });
 	console.log(response.data,'<=function')
 }
-async function streamOffSuscription(){
+async function streamOffSubscription(){
  	const response = await axios.post('https://api.twitch.tv/helix/eventsub/subscriptions',{
         type: 'stream.offline',
         version:'1',
@@ -219,4 +219,27 @@ async function getSubscription(){
         }
     })
     console.log(response.data.data)
+}
+async function raidEventSubscription(){
+    const response = await axios.post('https://api.twitch.tv/helix/eventsub/subscriptions',
+        {
+            "type": "channel.raid",
+            "version": "1",
+            "condition": {
+                "to_broadcaster_user_id": "988434540" // could provide from_broadcaster_user_id instead
+            },
+            "transport": {
+                "method": "webhook",
+                "callback": "'https://twitch.algorithmic-market.com/twitch/eventsub",
+                "secret": `${process.env.CLIENT_SECRET}`
+            }
+    },
+        {
+            headers:{
+                'Client-ID': process.env.CLIENT_ID,
+                'Authorization': `Bearer ${tokenApp}`,
+                'Content-Type':'application/json'
+            }
+        });
+    console.log('the response =>',response.data)
 }
