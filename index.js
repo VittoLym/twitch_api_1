@@ -132,8 +132,7 @@ app.post('/twitch/stream',(req,res)=>{
     }
 });
 app.listen(port,()=> {console.log(`listen on port ${port}`)
- /* raidEventSubscription() */
- deleteSubscription('3b3d77a4-53a0-4060-a7de-f9c24786b8e8')
+ getSubscription('3b3d77a4-53a0-4060-a7de-f9c24786b8e8')
 });
 async function streamOnSubscription(){
     const response = await axios.post('https://api.twitch.tv/helix/eventsub/subscriptions',{
@@ -230,7 +229,7 @@ async function raidEventSubscription(){
             },
             "transport": {
                 "method": "webhook",
-                "callback": "'https://twitch.algorithmic-market.com/twitch/eventsub",
+                "callback": "https://twitch.algorithmic-market.com/twitch/eventsub",
                 "secret": `${process.env.CLIENT_SECRET}`
             }
     },
